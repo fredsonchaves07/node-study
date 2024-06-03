@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto'
 import { FastifyInstance } from 'fastify'
-import knex from 'knex'
 import { z } from 'zod'
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
+import { knex } from '../database'
 
 export async function transactionsRoutes(app: FastifyInstance) {
   app.get(
@@ -33,7 +33,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
       const transation = await knex('transactions')
         .where({
           id,
-          sessiondId,
+          session_id: sessiondId,
         })
         .first()
       return { transation }
@@ -57,12 +57,11 @@ export async function transactionsRoutes(app: FastifyInstance) {
         maxAge: 60 * 60 * 24 * 7,
       })
     }
-    console.log(title, amount, type)
     await knex('transactions').insert({
       id: randomUUID(),
       title,
       amount,
-      sessionId,
+      session_id: sessionId,
     })
     return reply.status(201).send()
   })
