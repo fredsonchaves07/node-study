@@ -11,10 +11,12 @@ export async function transactionsRoutes(app: FastifyInstance) {
       preHandler: [checkSessionIdExists],
     },
     async (request) => {
-      const { sessiondId } = request.cookies
+      const { sessionId } = request.cookies
+
       const transactions = await knex('transactions')
-        .where('session_id', sessiondId)
+        .where('session_id', sessionId)
         .select()
+
       return { transactions }
     },
   )
@@ -25,15 +27,15 @@ export async function transactionsRoutes(app: FastifyInstance) {
       preHandler: [checkSessionIdExists],
     },
     async (request) => {
-      const { sessiondId } = request.cookies
       const getTransactionParamsSchema = z.object({
         id: z.string().uuid(),
       })
       const { id } = getTransactionParamsSchema.parse(request)
+      const { sessionId } = request.cookies
       const transation = await knex('transactions')
         .where({
           id,
-          session_id: sessiondId,
+          session_id: sessionId,
         })
         .first()
       return { transation }
