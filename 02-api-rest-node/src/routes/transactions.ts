@@ -30,15 +30,15 @@ export async function transactionsRoutes(app: FastifyInstance) {
       const getTransactionParamsSchema = z.object({
         id: z.string().uuid(),
       })
-      const { id } = getTransactionParamsSchema.parse(request)
+      const { id } = getTransactionParamsSchema.parse(request.params)
       const { sessionId } = request.cookies
-      const transation = await knex('transactions')
+      const transaction = await knex('transactions')
         .where({
           id,
           session_id: sessionId,
         })
         .first()
-      return { transation }
+      return { transaction }
     },
   )
 
@@ -62,7 +62,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
     await knex('transactions').insert({
       id: randomUUID(),
       title,
-      amount,
+      amount: type === 'credit' ? amount : amount * -1,
       session_id: sessionId,
     })
     return reply.status(201).send()
@@ -74,9 +74,9 @@ export async function transactionsRoutes(app: FastifyInstance) {
       preHandler: [checkSessionIdExists],
     },
     async (request) => {
-      const { sessiondId } = request.cookies
+      const { sessionId } = request.cookies
       const summary = await knex('transactions')
-        .where('sessiondId', sessiondId)
+        .where('session_id', sessionId)
         .sum('amount', { as: 'amount' })
         .first()
       return { summary }
