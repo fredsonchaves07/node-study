@@ -24,10 +24,10 @@ npm test
 
 ### Executando aplicação
 
-Execute o comando abaixo para executar a API
+Execute o comando abaixo para instalar e configurar o banco de dados
 
 ```bash
-npm build
+npm run migrate:latest
 ```
 
 ## 📝 Features
