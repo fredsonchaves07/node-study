@@ -1,17 +1,10 @@
-import {
-  beforeAll,
-  afterAll,
-  describe,
-  it,
-  beforeEach,
-  expect,
-  afterEach,
-} from 'vitest'
+import { beforeAll, afterAll, describe, it, beforeEach } from 'vitest'
 import { execSync } from 'node:child_process'
 import request from 'supertest'
 import { app } from '../src/app'
+import { afterEach } from 'node:test'
 
-describe('User routes test', () => {
+describe('Meals routes test', () => {
   beforeEach(async () => {
     execSync('npm run knex migrate:latest')
   })
@@ -28,17 +21,23 @@ describe('User routes test', () => {
     await app.close()
   })
 
-  it('It must be possible to create a user', async () => {
-    const response = await request(app.server)
+  it('It must be possible to create a meals', async () => {
+    const userResponse = await request(app.server)
       .post('/users')
       .send({
         name: 'John Doe',
         email: 'johndoed@email.com',
       })
       .expect(201)
-    const cookies = response.get('Set-Cookie')
-    expect(cookies).toEqual(
-      expect.arrayContaining([expect.stringContaining('sessionId')]),
-    )
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 1',
+        description: 'Refeição detalhada 1',
+        isDiet: true,
+      })
+      .expect(201)
   })
 })

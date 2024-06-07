@@ -9,7 +9,7 @@
     "migrate:latest": "npm run knex -- migrate:latest",
     "migrate:rollback": "npm run knex -- migrate:rollback",
     "lint": "eslint src --ext .ts --fix",
-    "test": "vitest",
+    "test": "vitest --run",
     "build": "tsup src --out-dir build"
   },
   "keywords": [],
