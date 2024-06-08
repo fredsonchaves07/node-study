@@ -34,7 +34,7 @@ npm run migrate:latest
 
 [X] Deve ser possível criar um usuário
 [X] Deve ser possível identificar o usuário entre as requisições
-[ ] Deve ser possível registrar uma refeição feita, com as seguintes informações:
+[X] Deve ser possível registrar uma refeição feita, com as seguintes informações:
     
     *As refeições devem ser relacionadas a um usuário.*
     
@@ -42,10 +42,10 @@ npm run migrate:latest
     - Descrição
     - Data e Hora
     - Está dentro ou não da dieta
-[ ] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
-[ ] Deve ser possível apagar uma refeição
+[X] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
+[X] Deve ser possível apagar uma refeição
 [ ] Deve ser possível listar todas as refeições de um usuário
-[ ] Deve ser possível visualizar uma única refeição
+[X] Deve ser possível visualizar uma única refeição
 [ ] Deve ser possível recuperar as métricas de um usuário
     - Quantidade total de refeições registradas
     - Quantidade total de refeições dentro da dieta
