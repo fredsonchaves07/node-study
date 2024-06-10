@@ -1,0 +1,10 @@
+{
+  "name": "01-fundamentos-nodejs",
+  "version": "1.0.0",
+  "main": "no",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  }
+}
