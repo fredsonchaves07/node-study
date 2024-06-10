@@ -181,4 +181,71 @@ describe('Meals routes test', () => {
       }),
     )
   })
+
+  it('should be able to get metrics', async () => {
+    const userResponse = await request(app.server)
+      .post('/users')
+      .send({ name: 'John Doe', email: 'johndoe@gmail.com' })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 1',
+        description: 'Refeição detalhada 1',
+        isDiet: true,
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 2',
+        description: 'Refeição detalhada 2',
+        isDiet: false,
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 3',
+        description: 'Refeição detalhada 3',
+        isDiet: true,
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 4',
+        description: 'Refeição detalhada 4',
+        isDiet: true,
+      })
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .send({
+        name: 'Refeição 5',
+        description: 'Refeição detalhada 5',
+        isDiet: true,
+      })
+
+    const metricsResponse = await request(app.server)
+      .get('/meals/metrics')
+      .set('Cookie', userResponse.get('Set-Cookie'))
+      .expect(200)
+
+    expect(metricsResponse.body).toEqual({
+      totalMeals: 5,
+      totalMealsOnDiet: 4,
+      totalMealsOffDiet: 1,
+      bestOnDietSequence: 0,
+    })
+  })
 })
