@@ -96,4 +96,16 @@ export async function mealsRoute(app: FastifyInstance) {
       .first()
     return reply.send({ meal })
   })
+
+  app.get(
+    '/',
+    {
+      preHandler: [checkSessionIdExists],
+    },
+    async (request, reply) => {
+      const { userId } = request
+      const meals = await knex('meals').select().where({ user_id: userId })
+      return reply.send({ meals })
+    },
+  )
 }

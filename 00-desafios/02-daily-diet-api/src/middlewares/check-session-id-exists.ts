@@ -13,13 +13,15 @@ export async function checkSessionIdExists(
     })
   }
 
-  const userId = await knex('users').where('session_id', sessionId).first()
+  const { id } = await knex('users')
+    .select('id')
+    .where('session_id', sessionId)
+    .first()
 
-  if (!userId) {
+  if (!id) {
     return reply.status(401).send({
       error: 'Unauthorized.',
     })
   }
-
-  request.userId = userId
+  request.userId = id
 }
